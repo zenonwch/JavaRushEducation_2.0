@@ -3,11 +3,6 @@
 
 # User-specific stuff:
 /.idea/
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/dictionaries
-.idea/vcs.xml
-.idea/jsLibraryMappings.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
@@ -45,13 +40,5 @@ crashlytics-build.properties
 fabric.properties
 
 # Others
-out
-file
-myLinkList.ser
-object
-singleton.tmp
-test2
-your.file.name
-DO NOT READ.txt
 JavaRushPlugin.properties
 my/*
