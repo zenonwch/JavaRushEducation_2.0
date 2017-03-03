@@ -12,13 +12,19 @@ public class Controller {
         this.model = model;
     }
 
+    public void setUsersView(final UsersView usersView) {
+        this.usersView = usersView;
+    }
+
     public void onShowAllUsers() {
         model.loadUsers();
         final ModelData modelData = model.getModelData();
         usersView.refresh(modelData);
     }
 
-    public void setUsersView(final UsersView usersView) {
-        this.usersView = usersView;
+    public void onShowAllDeletedUsers() {
+        model.loadDeletedUsers();
+        final ModelData modelData = model.getModelData();
+        usersView.refresh(modelData);
     }
 }

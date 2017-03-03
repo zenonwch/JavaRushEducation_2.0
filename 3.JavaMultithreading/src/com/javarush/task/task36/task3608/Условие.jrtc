@@ -1,4 +1,30 @@
-taskKey="com.javarush.task.task36.task3608.big04"
+taskKey="com.javarush.task.task36.task3608.big05"
+
+MVC (5)
+
+В сервисе есть метод, который возвращает всех удаленных пользователей. Давай их отобразим.
+
+1. Распредели методы по классам MVC:
+
+public void fireEventShowDeletedUsers() {
+...onShowAllDeletedUsers();
+}
+
+public void onShowAllDeletedUsers() {
+...loadDeletedUsers();
+}
+
+public void loadDeletedUsers() {
+List<User> users = userService.getAllDeletedUsers();
+}
+
+Не забудь, что данные, полученные с сервера, необходимо положить в ModelData. А потом обновить view.
+Добавь это самостоятельно в нужные методы.
+
+2. Добавь в Solution.main вызов нового метода, который ты поместил в view.
+
+3. Добавь в интерфейс Model метод, который ты поместил в Модель, реализуй его в FakeModel: выброси UnsupportedOperationException.
+
 
 MVC (4)
 
@@ -16,6 +42,7 @@ MVC (4)
 
 4. Обнови Solution.main: замени FakeModel на MainModel.
 Преимущества MVC в том, что в любой момент времени легко можно заменить любую часть паттерна.
+
 
 
 MVC (3)
