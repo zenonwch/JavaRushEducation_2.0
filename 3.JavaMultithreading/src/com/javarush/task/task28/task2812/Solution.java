@@ -9,7 +9,7 @@ ShutdownNow!
 */
 
 public class Solution {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(final String[] args) throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(5);
         for (int i = 1; i <= 10; i++) {
             final int localId = i;
@@ -20,10 +20,12 @@ public class Solution {
             });
         }
 
-        executor.shutdownNow();
+        final List<Runnable> awaitingExecutionTasks = executor.shutdownNow();
+        for (final Runnable task : awaitingExecutionTasks)
+            System.out.println(task);
     }
 
-    private static void doExpensiveOperation(int localId) {
+    private static void doExpensiveOperation(final int localId) {
         System.out.println(Thread.currentThread().getName() + ", localId="+localId);
     }
 }
