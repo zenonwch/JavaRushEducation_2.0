@@ -45,4 +45,10 @@ public class Controller {
         final ModelData modelData = model.getModelData();
         usersView.refresh(modelData);
     }
+
+    public void onUserChange(final String name, final long id, final int level) {
+        model.changeUserData(name, id, level);
+        final ModelData modelData = model.getModelData();
+        usersView.refresh(modelData);
+    }
 }
