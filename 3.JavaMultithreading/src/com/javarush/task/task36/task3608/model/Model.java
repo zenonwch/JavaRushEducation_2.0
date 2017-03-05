@@ -8,4 +8,6 @@ public interface Model {
     void loadDeletedUsers();
 
     void loadUserById(final long userId);
+
+    void deleteUserById(final long userId);
 }

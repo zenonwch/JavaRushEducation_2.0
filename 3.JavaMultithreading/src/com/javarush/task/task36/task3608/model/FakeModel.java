@@ -30,4 +30,9 @@ public class FakeModel implements Model {
     public void loadUserById(final long userId) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void deleteUserById(final long userId) {
+        throw new UnsupportedOperationException();
+    }
 }
