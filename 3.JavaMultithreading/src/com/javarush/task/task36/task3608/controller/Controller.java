@@ -33,4 +33,10 @@ public class Controller {
         final ModelData modelData = model.getModelData();
         usersView.refresh(modelData);
     }
+
+    public void onOpenUserEditForm(final long userId) {
+        model.loadUserById(userId);
+        final ModelData modelData = model.getModelData();
+        editUserView.refresh(modelData);
+    }
 }
