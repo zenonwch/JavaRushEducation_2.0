@@ -5,11 +5,11 @@ package com.javarush.task.task29.task2912;
 */
 
 public class Solution {
-    public static void main(String[] args) {
-        Logger logger3 = new PhoneLogger(Level.FATAL);
-        Logger logger2 = new SmsLogger(Level.ERROR);
-        Logger logger1 = new ConsoleLogger(Level.WARN);
-        Logger logger0 = new FileLogger(Level.INFO);
+    public static void main(final String[] args) {
+        final Logger logger3 = new PhoneLogger(Level.FATAL);
+        final Logger logger2 = new SmsLogger(Level.ERROR);
+        final Logger logger1 = new ConsoleLogger(Level.WARN);
+        final Logger logger0 = new FileLogger(Level.INFO);
 
         logger3.setNext(logger2);
         logger2.setNext(logger1);
