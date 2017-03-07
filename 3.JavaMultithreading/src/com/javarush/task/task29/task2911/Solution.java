@@ -10,15 +10,15 @@ import java.util.Scanner;
 public class Solution {
     public static boolean flagWin = false;
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         new Solution().runGame();
     }
 
     private void runGame() {
-        Random random = new Random();
-        int secret = random.nextInt(1000);
+        final Random random = new Random();
+        final int secret = random.nextInt(1000);
         int tryNumber = -1;
-        Scanner scanner = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
         for (int i = 1; i <= 10; i++) {
             System.out.printf("Попытка %d - вводи число: ", i);
             tryNumber = scanner.nextInt();
@@ -28,9 +28,10 @@ public class Solution {
             if (tryNumber > secret)
                 if (i < 10)
                     System.out.println("Загаданное число меньше");
-            if (tryNumber == secret)
+            if (tryNumber == secret) {
                 i = stopGame();
                 flagWin = true;
+            }
         }
         if (flagWin)
             printCongratulations(tryNumber);
@@ -38,7 +39,7 @@ public class Solution {
             printUpset();
     }
 
-    private void printCongratulations(int number) {
+    private void printCongratulations(final int number) {
         System.out.println();
         System.out.println("Ты угадал!");
         System.out.println("Загаданное число: " + number);
