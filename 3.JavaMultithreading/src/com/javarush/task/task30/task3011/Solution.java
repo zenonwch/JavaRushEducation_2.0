@@ -48,7 +48,7 @@ public class Solution {
             b.setName("B");
         }
         try {
-            if (c != null && c.getName() != null) {
+            if (c != null & c.getName() != null) {
             }
         } catch (NullPointerException e) {
             c = new C();
