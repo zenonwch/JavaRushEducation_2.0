@@ -2,6 +2,7 @@ package com.javarush.task.task35.task3513;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Model {
@@ -37,6 +38,74 @@ public class Model {
 
             if (compressed || merged)
                 needToAddTile = true;
+        }
+
+        if (needToAddTile) addTile();
+    }
+
+    public void right() {
+        boolean needToAddTile = false;
+        final Tile[] reverseRow = new Tile[FIELD_WIDTH];
+
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                reverseRow[j] = gameTiles[i][FIELD_WIDTH - 1 - j];
+            }
+            final boolean compressed = compressTiles(reverseRow);
+            final boolean merged = mergeTiles(reverseRow);
+
+            if (compressed || merged)
+                needToAddTile = true;
+
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                gameTiles[i][j] = reverseRow[FIELD_WIDTH - 1 - j];
+            }
+        }
+
+        if (needToAddTile) addTile();
+    }
+
+    public void up() {
+        boolean needToAddTile = false;
+        final Tile[] column = new Tile[FIELD_WIDTH];
+
+        for (int j = 0; j < FIELD_WIDTH; j++) {
+            for (int i = 0; i < FIELD_WIDTH; i++) {
+                column[i] = gameTiles[i][j];
+            }
+
+            final boolean compressed = compressTiles(column);
+            final boolean merged = mergeTiles(column);
+
+            if (compressed || merged)
+                needToAddTile = true;
+
+            for (int i = 0; i < FIELD_WIDTH; i++) {
+                gameTiles[i][j] = column[i];
+            }
+        }
+
+        if (needToAddTile) addTile();
+    }
+
+    public void down() {
+        boolean needToAddTile = false;
+        final Tile[] reverseColumn = new Tile[FIELD_WIDTH];
+
+        for (int j = 0; j < FIELD_WIDTH; j++) {
+            for (int i = 0; i < FIELD_WIDTH; i++) {
+                reverseColumn[i] = gameTiles[FIELD_WIDTH - 1 - i][j];
+            }
+
+            final boolean compressed = compressTiles(reverseColumn);
+            final boolean merged = mergeTiles(reverseColumn);
+
+            if (compressed || merged)
+                needToAddTile = true;
+
+            for (int i = 0; i < FIELD_WIDTH; i++) {
+                gameTiles[i][j] = reverseColumn[FIELD_WIDTH - 1 - i];
+            }
         }
 
         if (needToAddTile) addTile();
@@ -128,4 +197,5 @@ public class Model {
 
         return hasChanges;
     }
+
 }
