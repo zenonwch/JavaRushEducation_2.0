@@ -28,8 +28,24 @@ public class Model {
         addTile();
     }
 
+    public void left() {
+        boolean needToAddTile = false;
+
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            final boolean compressed = compressTiles(gameTiles[i]);
+            final boolean merged = mergeTiles(gameTiles[i]);
+
+            if (compressed || merged)
+                needToAddTile = true;
+        }
+
+        if (needToAddTile) addTile();
+    }
+
     private void addTile() {
         final List<Tile> emptyTilesList = getEmptyTiles();
+        if (emptyTilesList.isEmpty()) return;
+
         final int emptyTilesListSize = emptyTilesList.size();
         final int randomTileNumber = (int) (Math.random() * emptyTilesListSize);
         final Tile randomTile = emptyTilesList.get(randomTileNumber);
@@ -47,42 +63,69 @@ public class Model {
         return emptyTiles;
     }
 
-    private void compressTiles(final Tile[] tiles) {
-        final List<Tile> tilesList = new ArrayList<>(Arrays.asList(tiles));
+    private boolean compressTiles(final Tile[] tiles) {
+        final List<Tile> tilesList = new ArrayList<>();
+        final List<Tile> emptyTilesList = new ArrayList<>();
         final int len = tiles.length;
+        int firstEmptyTile = 4;
+
         for (int i = 0; i < len; i++) {
-            if (tilesList.get(i).isEmpty())
-                tilesList.add(tilesList.remove(i));
+            final Tile tile = tiles[i];
+            if (tile.isEmpty()) {
+                emptyTilesList.add(tile);
+                if (firstEmptyTile == 4)
+                    firstEmptyTile = i;
+            } else
+                tilesList.add(tile);
         }
-        for (int i = 0; i < len; i++) {
-            tiles[i] = tilesList.get(i);
+
+        boolean hasChanges = false;
+
+        if (emptyTilesList.size() != (4 - firstEmptyTile)) {
+            hasChanges = true;
+
+            tilesList.addAll(emptyTilesList);
+
+            for (int i = 0; i < len; i++) {
+                tiles[i] = tilesList.get(i);
+            }
         }
+
+        return hasChanges;
     }
 
-    private void mergeTiles(final Tile[] tiles) {
+    private boolean mergeTiles(final Tile[] tiles) {
         if (tiles[0].isEmpty())
-            return;
+            return false;
+
+        boolean hasChanges = false;
 
         final List<Tile> tilesList = new ArrayList<>(Arrays.asList(tiles));
         final int len = tiles.length;
 
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len - 1; i++) {
             final Tile current = tilesList.get(i);
+
             final Tile next = tilesList.get(i + 1);
 
-            if (current.value == next.value) {
+            if (current.value == next.value && current.value != 0) {
                 current.value *= 2;
                 next.value = 0;
                 tilesList.add(tilesList.remove(i + 1));
 
+                hasChanges = true;
                 score += current.value;
                 if (current.value > maxTile)
                     maxTile = current.value;
             }
         }
 
-        for (int i = 0; i < len; i++) {
-            tiles[i] = tilesList.get(i);
+        if (hasChanges) {
+            for (int i = 0; i < len; i++) {
+                tiles[i] = tilesList.get(i);
+            }
         }
+
+        return hasChanges;
     }
 }
