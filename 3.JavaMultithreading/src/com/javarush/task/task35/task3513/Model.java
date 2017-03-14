@@ -29,6 +29,10 @@ public class Model {
         addTile();
     }
 
+    public Tile[][] getGameTiles() {
+        return gameTiles;
+    }
+
     public void left() {
         boolean needToAddTile = false;
 
@@ -109,6 +113,27 @@ public class Model {
         }
 
         if (needToAddTile) addTile();
+    }
+
+    public boolean canMove() {
+        if (!getEmptyTiles().isEmpty())
+            return true;
+
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH - 1; j++) {
+                if (gameTiles[i][j].value == gameTiles[i][j + 1].value)
+                    return true;
+            }
+        }
+
+        for (int i = 0; i < FIELD_WIDTH - 1; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                if (gameTiles[i][j].value == gameTiles[i + 1][j].value)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     private void addTile() {
