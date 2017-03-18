@@ -3,10 +3,14 @@ package com.javarush.task.task35.task3513;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 public class Model {
     private static final int FIELD_WIDTH = 4;
     private Tile[][] gameTiles;
+    private Stack<Tile[][]> previousStates = new Stack<>();
+    private Stack<Integer> previousScores = new Stack<>();
+    private boolean isSaveNeeded = true;
 
     int score;
     int maxTile;
@@ -135,6 +139,14 @@ public class Model {
         return false;
     }
 
+    public void rollback() {
+        if (previousScores.isEmpty() || previousStates.isEmpty())
+            return;
+
+        gameTiles = previousStates.pop();
+        score = previousScores.pop();
+    }
+
     private void addTile() {
         final List<Tile> emptyTilesList = getEmptyTiles();
         if (emptyTilesList.isEmpty()) return;
@@ -220,6 +232,15 @@ public class Model {
         }
 
         return hasChanges;
+    }
+
+    private void saveState(final Tile[][] tiles) {
+        final Tile[][] copyTiles = new Tile[tiles.length][];
+        for (int i = 0; i < tiles.length; i++)
+            copyTiles[i] = tiles[i].clone();
+        previousStates.push(copyTiles);
+        previousScores.push(score);
+        isSaveNeeded = false;
     }
 
 }
