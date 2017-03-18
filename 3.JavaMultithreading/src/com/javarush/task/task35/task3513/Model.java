@@ -2,7 +2,6 @@ package com.javarush.task.task35.task3513;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Model {

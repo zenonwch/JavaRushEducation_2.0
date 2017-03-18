@@ -14,6 +14,10 @@ public class Controller extends KeyAdapter {
         view = new View(this);
     }
 
+    public View getView() {
+        return view;
+    }
+
     public void resetGame() {
         model.score = 0;
         view.isGameWon = false;
@@ -38,7 +42,7 @@ public class Controller extends KeyAdapter {
             view.isGameLost = true;
 
         if (!view.isGameLost && !view.isGameWon) {
-            switch(e.getKeyCode()) {
+            switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     model.left();
                     break;
@@ -54,11 +58,11 @@ public class Controller extends KeyAdapter {
                 default:
                     break;
             }
+
+            if (model.maxTile == WINNING_TILE)
+                view.isGameWon = true;
+
+            view.repaint();
         }
-
-        if (model.maxTile == WINNING_TILE)
-            view.isGameWon = true;
-
-        view.repaint();
     }
 }
