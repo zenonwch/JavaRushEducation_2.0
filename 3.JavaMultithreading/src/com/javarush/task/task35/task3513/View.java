@@ -14,14 +14,14 @@ public class View extends JPanel {
     boolean isGameWon = false;
     boolean isGameLost = false;
 
-    public View(Controller controller) {
+    public View(final Controller controller) {
         setFocusable(true);
         this.controller = controller;
         addKeyListener(controller);
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(final Graphics g) {
         super.paint(g);
         g.setColor(BG_COLOR);
         g.fillRect(0, 0, this.getSize().width, this.getSize().height);
@@ -32,20 +32,24 @@ public class View extends JPanel {
         }
 
         g.drawString("Score: " + controller.getScore(), 140, 465);
+    }
 
+    public void theEnd() {
         if (isGameWon) {
             JOptionPane.showMessageDialog(this, "You've won!");
+            controller.resetGame();
         } else if(isGameLost) {
             JOptionPane.showMessageDialog(this, "You've lost :(");
+            controller.resetGame();
         }
     }
 
-    private void drawTile(Graphics g2, Tile tile, int x, int y) {
-        Graphics2D g = ((Graphics2D) g2);
+    private void drawTile(final Graphics g2, final Tile tile, final int x, final int y) {
+        final Graphics2D g = (Graphics2D) g2;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        int value = tile.value;
-        int xOffset = offsetCoors(x);
-        int yOffset = offsetCoors(y);
+        final int value = tile.value;
+        final int xOffset = offsetCoors(x);
+        final int yOffset = offsetCoors(y);
         g.setColor(tile.getTileColor());
         g.fillRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE , 8, 8);
         g.setColor(tile.getFontColor());
@@ -53,7 +57,7 @@ public class View extends JPanel {
         final Font font = new Font(FONT_NAME, Font.BOLD, size);
         g.setFont(font);
 
-        String s = String.valueOf(value);
+        final String s = String.valueOf(value);
         final FontMetrics fm = getFontMetrics(font);
 
         final int w = fm.stringWidth(s);
@@ -63,7 +67,7 @@ public class View extends JPanel {
             g.drawString(s, xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2);
     }
 
-    private static int offsetCoors(int arg) {
+    private static int offsetCoors(final int arg) {
         return arg * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN;
     }
 }

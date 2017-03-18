@@ -38,8 +38,12 @@ public class Controller extends KeyAdapter {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
             resetGame();
 
-        if (!model.canMove())
+        if (!model.canMove()) {
             view.isGameLost = true;
+            view.theEnd();
+            view.repaint();
+            return;
+        }
 
         if (!view.isGameLost && !view.isGameWon) {
             switch (e.getKeyCode()) {
@@ -59,8 +63,10 @@ public class Controller extends KeyAdapter {
                     break;
             }
 
-            if (model.maxTile == WINNING_TILE)
+            if (model.maxTile == WINNING_TILE) {
                 view.isGameWon = true;
+                view.theEnd();
+            }
 
             view.repaint();
         }
