@@ -37,6 +37,7 @@ public class Model {
     }
 
     public void left() {
+        saveState(gameTiles);
         boolean needToAddTile = false;
 
         for (int i = 0; i < FIELD_WIDTH; i++) {
@@ -51,6 +52,7 @@ public class Model {
     }
 
     public void right() {
+        saveState(gameTiles);
         boolean needToAddTile = false;
         final Tile[] reverseRow = new Tile[FIELD_WIDTH];
 
@@ -73,6 +75,7 @@ public class Model {
     }
 
     public void up() {
+        saveState(gameTiles);
         boolean needToAddTile = false;
         final Tile[] column = new Tile[FIELD_WIDTH];
 
@@ -96,6 +99,7 @@ public class Model {
     }
 
     public void down() {
+        saveState(gameTiles);
         boolean needToAddTile = false;
         final Tile[] reverseColumn = new Tile[FIELD_WIDTH];
 
@@ -235,9 +239,14 @@ public class Model {
     }
 
     private void saveState(final Tile[][] tiles) {
-        final Tile[][] copyTiles = new Tile[tiles.length][];
-        for (int i = 0; i < tiles.length; i++)
-            copyTiles[i] = tiles[i].clone();
+        final Tile[][] copyTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                final Tile tile = new Tile();
+                tile.value = tiles[i][j].value;
+                copyTiles[i][j] = tile;
+            }
+        }
         previousStates.push(copyTiles);
         previousScores.push(score);
         isSaveNeeded = false;
