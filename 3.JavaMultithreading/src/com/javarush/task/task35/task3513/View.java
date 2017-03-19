@@ -11,8 +11,8 @@ public class View extends JPanel {
 
     private Controller controller;
 
-    boolean isGameWon = false;
-    boolean isGameLost = false;
+    boolean isGameWon;
+    boolean isGameLost;
 
     public View(final Controller controller) {
         setFocusable(true);
@@ -24,7 +24,7 @@ public class View extends JPanel {
     public void paint(final Graphics g) {
         super.paint(g);
         g.setColor(BG_COLOR);
-        g.fillRect(0, 0, this.getSize().width, this.getSize().height);
+        g.fillRect(0, 0, getSize().width, getSize().height);
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
                 drawTile(g, controller.getGameTiles()[y][x], x, y);
