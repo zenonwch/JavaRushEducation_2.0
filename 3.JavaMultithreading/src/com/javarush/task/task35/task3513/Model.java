@@ -122,6 +122,14 @@ public class Model {
         if (needToAddTile) addTile();
     }
 
+    public void randomMove() {
+        final int n = (int) (Math.random() * 100) % 4;
+        if (n == 0) left();
+        if (n == 1) right();
+        if (n == 2) up();
+        if (n == 3) down();
+    }
+
     public boolean canMove() {
         if (!getEmptyTiles().isEmpty())
             return true;
