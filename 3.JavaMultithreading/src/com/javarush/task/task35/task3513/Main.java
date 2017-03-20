@@ -10,9 +10,9 @@ public class Main {
         final Controller controller = new Controller(model);
         final JFrame gameView = new JFrame();
 
-//        final URL imgUrl = Main.class.getResource("res/game.png");
-//        final Image icon = new ImageIcon(imgUrl).getImage();
-//        gameView.setIconImage(icon);
+        final URL imgUrl = Main.class.getResource("res/game.png");
+        final Image icon = new ImageIcon(imgUrl).getImage();
+        gameView.setIconImage(icon);
 
         gameView.setTitle("2048");
         gameView.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
