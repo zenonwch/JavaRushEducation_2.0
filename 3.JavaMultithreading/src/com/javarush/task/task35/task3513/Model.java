@@ -130,6 +130,31 @@ public class Model {
         if (n == 3) down();
     }
 
+    public MoveEfficiency getMoveEfficiency(Move move) {
+        move.move();
+        final int emptyTilesSize = getEmptyTiles().size();
+        final MoveEfficiency efficiency = hasBoardChanged() ?
+                new MoveEfficiency(emptyTilesSize, score, move) :
+                new MoveEfficiency(-1, 0, move);
+        rollback();
+        return efficiency;
+    }
+
+    public boolean hasBoardChanged() {
+        if (previousStates.isEmpty())
+            return true;
+        int sum1 = 0;
+        int sum2 = 0;
+        final Tile[][] lastInStack = previousStates.peek();
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                sum1 += gameTiles[i][j].value;
+                sum2 += lastInStack[i][j].value;
+            }
+        }
+        return sum1 != sum2;
+    }
+
     public boolean canMove() {
         if (!getEmptyTiles().isEmpty())
             return true;
