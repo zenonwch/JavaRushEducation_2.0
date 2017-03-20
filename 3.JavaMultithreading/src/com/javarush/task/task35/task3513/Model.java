@@ -1,9 +1,6 @@
 package com.javarush.task.task35.task3513;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Model {
     private static final int FIELD_WIDTH = 4;
@@ -130,7 +127,16 @@ public class Model {
         if (n == 3) down();
     }
 
-    public MoveEfficiency getMoveEfficiency(Move move) {
+    public void autoMove() {
+        final PriorityQueue<MoveEfficiency> queue = new PriorityQueue<>(4, Collections.reverseOrder());
+        queue.add(getMoveEfficiency(this::down));
+        queue.add(getMoveEfficiency(this::left));
+        queue.add(getMoveEfficiency(this::right));
+        queue.add(getMoveEfficiency(this::up));
+        queue.peek().getMove().move();
+    }
+
+    public MoveEfficiency getMoveEfficiency(final Move move) {
         move.move();
         final int emptyTilesSize = getEmptyTiles().size();
         final MoveEfficiency efficiency = hasBoardChanged() ?
