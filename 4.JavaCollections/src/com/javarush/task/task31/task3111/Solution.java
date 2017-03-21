@@ -11,8 +11,8 @@ import java.util.List;
 */
 public class Solution {
 
-    public static void main(String[] args) throws IOException {
-        SearchFileVisitor searchFileVisitor = new SearchFileVisitor();
+    public static void main(final String[] args) throws IOException {
+        final SearchFileVisitor searchFileVisitor = new SearchFileVisitor();
 
         searchFileVisitor.setPartOfName("amigo");
         searchFileVisitor.setPartOfContent("programmer");
@@ -21,8 +21,8 @@ public class Solution {
 
         Files.walkFileTree(Paths.get("D:/SecretFolder"), searchFileVisitor);
 
-        List<Path> foundFiles = searchFileVisitor.getFoundFiles();
-        for (Path file : foundFiles) {
+        final List<Path> foundFiles = searchFileVisitor.getFoundFiles();
+        for (final Path file : foundFiles) {
             System.out.println(file);
         }
     }
