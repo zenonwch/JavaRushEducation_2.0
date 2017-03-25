@@ -8,4 +8,3 @@ public interface Animal extends Remote {
 
     void printName() throws RemoteException;
 }
-

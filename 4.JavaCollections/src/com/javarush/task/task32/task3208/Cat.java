@@ -6,7 +6,7 @@ public class Cat implements Animal {
 
     private String name;
 
-    public Cat(String name) {
+    public Cat(final String name) {
         this.name = name;
     }
 
@@ -17,6 +17,6 @@ public class Cat implements Animal {
 
     @Override
     public void printName() throws RemoteException {
-        System.out.print("Cat " + name + " ");
+        System.out.print("Cat " + name + ' ');
     }
 }
