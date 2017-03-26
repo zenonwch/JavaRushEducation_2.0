@@ -15,7 +15,7 @@ public class RealBean {
     protected Map<String, Object> additionalMap = new HashMap<>();
 
     @JsonCreator
-    public RealBean(@JsonProperty("id") int id, @JsonProperty("name") String name) {
+    public RealBean(@JsonProperty("id") final int id, @JsonProperty("name") final String name) {
         this.id = id;
         this.name = name;
     }
@@ -28,12 +28,13 @@ public class RealBean {
         return name;
     }
 
+    @JsonAnyGetter
     public Map<String, Object> getAdditionalMap() {
         return additionalMap;
     }
 
     @JsonAnySetter
-    public void setAdditionalMap(String name, Object value) {
+    public void setAdditionalMap(final String name, final Object value) {
         additionalMap.put(name, value);
     }
 }
