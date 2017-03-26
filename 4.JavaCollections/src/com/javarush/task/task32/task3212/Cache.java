@@ -12,8 +12,8 @@ public class Cache {
         services = new ArrayList<>();
     }
 
-    public Service getService(String serviceName) {
-        for (Service service : services) {
+    public Service getService(final String serviceName) {
+        for (final Service service : services) {
             if (service.getName().equalsIgnoreCase(serviceName)) {
                 System.out.println("Return cached  " + serviceName + " object");
                 return service;
@@ -22,9 +22,9 @@ public class Cache {
         return null;
     }
 
-    public void addService(Service newService) {
+    public void addService(final Service newService) {
         boolean exists = false;
-        for (Service service : services) {
+        for (final Service service : services) {
             if (service.getName().equalsIgnoreCase(newService.getName())) {
                 exists = true;
             }

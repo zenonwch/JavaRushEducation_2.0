@@ -4,7 +4,7 @@ import com.javarush.task.task32.task3212.service.impl.EJBServiceImpl;
 import com.javarush.task.task32.task3212.service.impl.JMSServiceImpl;
 
 public class InitialContext {
-    public Object lookup(String jndiName) {
+    public Object lookup(final String jndiName) {
 
         if (jndiName.equalsIgnoreCase("EJBService")) {
             System.out.println("Looking up and creating a new EJBService object");
