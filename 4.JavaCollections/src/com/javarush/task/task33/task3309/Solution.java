@@ -1,7 +1,6 @@
 package com.javarush.task.task33.task3309;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -32,34 +31,44 @@ public class Solution {
     public static String toXmlWithComment(final Object obj, final String tagName, final String comment) {
         final StringWriter writer = new StringWriter();
         try {
+            //create DOM document
             final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = builderFactory.newDocumentBuilder();
             final Document  doc = builder.newDocument();
             doc.setXmlStandalone(false);
 
+            //create JAXB context
             final JAXBContext ctx = JAXBContext.newInstance(obj.getClass());
             final Marshaller marshaller = ctx.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            //marshal to DOM document
             marshaller.marshal(obj, doc);
 
+            //get all DOM document nodes
             final NodeList nodes = doc.getElementsByTagName("*");
+            //iterate Nodes
             for (int i = 0, l = nodes.getLength(); i < l; i++) {
+                //current Node
                 final Node node = nodes.item(i);
                 final NodeList children = node.getChildNodes();
                 final Node firstChild = children.item(0);
                 final short firstChildType = firstChild.getNodeType();
                 final String nodeContent = node.getTextContent();
+                //check if first child is text and contains escaped symbols
                 if (firstChildType == Node.TEXT_NODE && XML_ESCAPES.matcher(nodeContent).matches()) {
+                    //replace text with CDATA section
                     final Node cdataNode = doc.createCDATASection(nodeContent);
                     node.replaceChild(cdataNode, firstChild);
                 }
                 final String nodeName = node.getNodeName();
+                //adding comment before each Node with name == tagName
                 if (nodeName.equals(tagName)) {
                     final Node commentNode = doc.createComment(comment);
                     node.getParentNode().insertBefore(commentNode, node);
                 }
             }
 
+            //transform DOM document to XML document
             final Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
@@ -67,6 +76,7 @@ public class Solution {
         } catch (final JAXBException | ParserConfigurationException | TransformerException e) {
             System.out.println(e.getMessage());
         }
+        //write XML document to String
         return writer.toString();
     }
 
