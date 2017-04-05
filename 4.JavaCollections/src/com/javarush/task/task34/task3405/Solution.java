@@ -1,5 +1,6 @@
 package com.javarush.task.task34.task3405;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +8,12 @@ import java.util.List;
 Мягкие ссылки
 */
 public class Solution {
-    public static Helper helper = new Helper();
+    public static final Helper helper = new Helper();
 
     public static class Monkey {
-        private String name;
+        private final String name;
 
-        public Monkey(String name) {
+        public Monkey(final String name) {
             this.name = name;
         }
 
@@ -22,12 +23,13 @@ public class Solution {
         }
     }
 
-    public static void main(String args[]) throws InterruptedException {
+    public static void main(final String[] args) throws InterruptedException {
         helper.startTime();
 
         Monkey monkey = new Monkey("Simka");
 
         //Add reference here
+        final SoftReference<Monkey> reference = new SoftReference<>(monkey);
 
         helper.callGC();
 
@@ -62,11 +64,11 @@ public class Solution {
 
         void heapConsuming() {
             try {
-                List<Solution> heap = new ArrayList<Solution>(100000);
+                final List<Solution> heap = new ArrayList<Solution>(100000);
                 while (!isFinalized) {
                     heap.add(new Solution());
                 }
-            } catch (OutOfMemoryError e) {
+            } catch (final OutOfMemoryError e) {
                 System.out.println("Out of memory error raised");
             }
         }
