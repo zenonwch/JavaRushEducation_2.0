@@ -4,6 +4,8 @@ import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /* 
 Призрачные ссылки
@@ -14,9 +16,9 @@ public class Solution {
     public static class Monkey {
     }
 
-    public static void main(String args[]) throws InterruptedException {
+    public static void main(final String[] args) throws InterruptedException {
         helper.startTime();
-        List<PhantomReference<Monkey>> list = helper.getFilledList();
+        final List<PhantomReference<Monkey>> list = helper.getFilledList();
 
         //before GC
         helper.checkListWithReferences(list, "before");
@@ -54,18 +56,18 @@ public class Solution {
 
         void heapConsuming() {
             try {
-                List<Solution> heap = new ArrayList<Solution>(100000);
+                final List<Solution> heap = new ArrayList<Solution>(100000);
                 while (true) {
                     heap.add(new Solution());
                 }
-            } catch (OutOfMemoryError e) {
+            } catch (final OutOfMemoryError e) {
                 System.out.println("Out of memory error raised");
             }
         }
 
-        public void checkListWithReferences(List<PhantomReference<Monkey>> list, String string) {
+        public void checkListWithReferences(final List<PhantomReference<Monkey>> list, final String string) {
             int count = 0;
-            for (PhantomReference<Monkey> reference : list) {
+            for (final PhantomReference<Monkey> reference : list) {
                 if (reference.isEnqueued()) {
                     count++;
                 }
@@ -75,7 +77,10 @@ public class Solution {
         }
 
         public List<PhantomReference<Monkey>> getFilledList() {
-            return null;
+            final ReferenceQueue<Monkey> queue = new ReferenceQueue<>();
+            return IntStream.range(0, 200)
+                    .mapToObj(i -> new PhantomReference<>(new Monkey(), queue))
+                    .collect(Collectors.toCollection(ArrayList::new));
         }
 
         public void finish() throws InterruptedException {
