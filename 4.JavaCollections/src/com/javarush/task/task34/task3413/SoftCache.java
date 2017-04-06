@@ -5,23 +5,35 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SoftCache {
-    private Map<Long, SoftReference<AnyObject>> cacheMap = new ConcurrentHashMap<>();
+    private final Map<Long, SoftReference<AnyObject>> cacheMap = new ConcurrentHashMap<>();
 
-    public AnyObject get(Long key) {
-        SoftReference<AnyObject> softReference = cacheMap.get(key);
-
-        //напишите тут ваш код
+    public AnyObject get(final Long key) {
+        final SoftReference<AnyObject> softReference = cacheMap.get(key);
+        return softReference == null ? null : softReference.get();
     }
 
-    public AnyObject put(Long key, AnyObject value) {
-        SoftReference<AnyObject> softReference = cacheMap.put(key, new SoftReference<>(value));
+    public AnyObject put(final Long key, final AnyObject value) {
 
-        //напишите тут ваш код
+        final SoftReference<AnyObject> softReference = cacheMap.put(key, new SoftReference<>(value));
+        final AnyObject anyObject;
+        if (softReference != null) {
+            anyObject = softReference.get();
+            softReference.clear();
+        } else {
+            anyObject = null;
+        }
+        return anyObject;
     }
 
-    public AnyObject remove(Long key) {
-        SoftReference<AnyObject> softReference = cacheMap.remove(key);
-
-        //напишите тут ваш код
+    public AnyObject remove(final Long key) {
+        final SoftReference<AnyObject> softReference = cacheMap.remove(key);
+        final AnyObject anyObject;
+        if (softReference != null) {
+            anyObject = softReference.get();
+            softReference.clear();
+        } else {
+            anyObject = null;
+        }
+        return anyObject;
     }
 }
