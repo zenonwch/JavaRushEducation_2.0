@@ -41,4 +41,5 @@ fabric.properties
 
 # Others
 JavaRushPlugin.properties
+/lib/
 my/*
