@@ -11,11 +11,11 @@ import java.util.Properties;
 Настраиваем логгер
 */
 public class Solution {
-    public static void main(String args[]) throws IOException {
-        String logProperties = "src/" + Solution.class.getPackage().getName().replaceAll("[.]", "/") + "/log4j.properties";
-        Path path = Paths.get(logProperties).toAbsolutePath();
+    public static void main(final String[] args) throws IOException {
+        final String logProperties = "4.JavaCollection/src/" + Solution.class.getPackage().getName().replaceAll("[.]", "/") + "/log4j.properties";
+        final Path path = Paths.get(logProperties).toAbsolutePath();
         try (InputStream is = new FileInputStream(path.toFile())) {
-            Properties properties = new Properties();
+            final Properties properties = new Properties();
             properties.load(is);
         }
     }
