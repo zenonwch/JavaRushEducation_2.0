@@ -4,22 +4,22 @@ package com.javarush.task.task34.task3408;
 Кэширование
 */
 public class Solution {
-    public static void main(String[] args) throws Exception {
-        SomeKey someKey = new SomeKey();
+    public static void main(final String[] args) throws Exception {
+        final SomeKey someKey = new SomeKey();
         someKey.name = "test";
 
-        SomeKey someKeyNew = new SomeKey();
+        final SomeKey someKeyNew = new SomeKey();
         someKeyNew.name = "testNew";
 
-        SomeValue value = new SomeValue(someKey);
+        final SomeValue value = new SomeValue(someKey);
 
-        Cache<SomeKey, SomeValue> cache = new Cache<>();
+        final Cache<SomeKey, SomeValue> cache = new Cache<>();
         cache.put(value);
 
-        SomeValue valueFromCacheExisted = cache.getByKey(someKey, SomeValue.class);
+        final SomeValue valueFromCacheExisted = cache.getByKey(someKey, SomeValue.class);
         System.out.println(valueFromCacheExisted);
 
-        SomeValue valueFromCacheNew = cache.getByKey(someKeyNew, SomeValue.class);
+        final SomeValue valueFromCacheNew = cache.getByKey(someKeyNew, SomeValue.class);
         System.out.println(valueFromCacheNew);
 
         System.out.println(cache.size());
@@ -47,7 +47,7 @@ public class Solution {
         public SomeValue() {
         }
 
-        public SomeValue(SomeKey myKey) {        //use this constructor
+        public SomeValue(final SomeKey myKey) {        //use this constructor
             this.myKey = myKey;
         }
 
