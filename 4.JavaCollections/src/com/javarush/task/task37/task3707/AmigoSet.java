@@ -26,12 +26,32 @@ public class AmigoSet<E> extends AbstractSet<E> implements Set<E>, Serializable,
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return map.keySet().iterator();
     }
 
     @Override
     public int size() {
-        return 0;
+        return map.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return map.isEmpty();
+    }
+
+    @Override
+    public boolean contains(final Object o) {
+        return map.keySet().contains(o);
+    }
+
+    @Override
+    public void clear() {
+        map.clear();
+    }
+
+    @Override
+    public boolean remove(final Object o) {
+        return map.remove(o) == null;
     }
 
     @Override
