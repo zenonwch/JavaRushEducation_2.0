@@ -1,14 +1,18 @@
 package com.javarush.task.task37.task3707;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
-public class AmigoSet<E> extends AbstractSet<E> implements Set<E>, Serializable, Cloneable {
+public class AmigoSet<E> extends AbstractSet<E>
+        implements Set<E>, Serializable, Cloneable {
+    private static final long serialVersionUID = 1713329991004446844L;
+
+    private transient HashMap<E, Object> map; //transient means not serializable
+
     private static final Object PRESENT = new Object();
-    private transient HashMap<E, Object> map;
 
     public AmigoSet() {
         map = new HashMap<>();
@@ -66,28 +70,36 @@ public class AmigoSet<E> extends AbstractSet<E> implements Set<E>, Serializable,
         }
     }
 
-    @Override
-    public Spliterator<E> spliterator() {
-        return null;
+    private void writeObject(final ObjectOutputStream oos) throws IOException {
+        oos.defaultWriteObject();
+
+        final int size = size();
+        oos.writeInt(size);
+
+        final int capacity = HashMapReflectionHelper.callHiddenMethod(map, "capacity");
+        oos.writeInt(capacity);
+
+        final float loadFactor = HashMapReflectionHelper.callHiddenMethod(map, "loadFactor");
+        oos.writeFloat(loadFactor);
+
+        for (final E e : map.keySet()) {
+            oos.writeObject(e);
+        }
     }
 
-    @Override
-    public boolean removeIf(final Predicate<? super E> filter) {
-        return false;
-    }
+    private void readObject(final ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
 
-    @Override
-    public Stream<E> stream() {
-        return null;
-    }
+        final int size = ois.readInt();
 
-    @Override
-    public Stream<E> parallelStream() {
-        return null;
-    }
+        final int capacity = ois.readInt();
+        final float loadFactory = ois.readFloat();
 
-    @Override
-    public void forEach(final Consumer<? super E> action) {
+        map = new HashMap<>(capacity, loadFactory);
 
+        for (int i = 0; i < size; i++) {
+            @SuppressWarnings("unchecked") final E e = (E) ois.readObject();
+            map.put(e, PRESENT);
+        }
     }
 }
