@@ -4,7 +4,7 @@ public class Cat {
 
     protected String name;
 
-    public Cat(String name) {
+    public Cat(final String name) {
         this.name = name;
     }
 

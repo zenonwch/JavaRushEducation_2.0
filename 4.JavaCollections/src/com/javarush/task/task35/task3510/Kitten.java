@@ -2,7 +2,7 @@ package com.javarush.task.task35.task3510;
 
 public class Kitten extends Cat {
 
-    public Kitten(String name) {
+    public Kitten(final String name) {
         super(name);
     }
 

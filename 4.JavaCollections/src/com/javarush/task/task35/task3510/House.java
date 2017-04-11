@@ -7,64 +7,44 @@ import java.util.List;
 /* 
 Вход воспрещен!
 */
-public class House {
+public class House<T> {
 
-    private List residents = new ArrayList();
+    private List<T> residents = new ArrayList<>();
 
-    public void enter(Object resident) {
+    public void enter(final T resident) {
         residents.add(resident);
-        checkConflicts();
     }
 
-    public void leave(Object resident) {
+    public void leave(final T resident) {
         residents.remove(resident);
-    }
-
-    private void checkConflicts() {
-        boolean conflict = false;
-        for (Object resident : residents) {
-            if (resident instanceof Dog) {
-                conflict = true;
-            }
-        }
-
-        if (conflict) {
-            Iterator iterator = residents.iterator();
-            while (iterator.hasNext()) {
-                Object resident = iterator.next();
-                if (resident instanceof Cat) {
-                    iterator.remove();
-                }
-            }
-        }
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("В доме находятся:\n");
-        for (Object resident : residents) {
+        for (final T resident : residents) {
             builder.append(resident.toString()).append("\n");
         }
         return builder.toString();
     }
 
-    public static void main(String[] args) {
-        Dog bruno = new Dog("Bruno");
-        Puppy larsik = new Puppy("Larsik");
-        Cat barsik = new Cat("Barsik");
-        Kitten keksik = new Kitten("Keksik");
+    public static void main(final String[] args) {
+        final Dog bruno = new Dog("Bruno");
+        final Puppy larsik = new Puppy("Larsik");
+        final Cat barsik = new Cat("Barsik");
+        final Kitten keksik = new Kitten("Keksik");
 
-        House dogHouse = new House();
+        final House<Dog> dogHouse = new House<>();
         dogHouse.enter(bruno);
         dogHouse.enter(larsik);
-        dogHouse.enter(barsik);
+//        dogHouse.enter(barsik);
         System.out.println(dogHouse.toString());
 
-        House catHouse = new House();
+        final House<Cat> catHouse = new House<>();
         catHouse.enter(barsik);
         catHouse.enter(keksik);
-        catHouse.enter(bruno);
+//        catHouse.enter(bruno);
         System.out.println(catHouse.toString());
     }
 }
