@@ -8,19 +8,19 @@ Wildcards
 */
 public class Solution {
 
-    public static <D, H extends D, S extends H> void add(List<D> destinationList, List<S> sourceList) {
-        ListIterator<D> destListIterator = destinationList.listIterator();
-        ListIterator<S> srcListIterator = sourceList.listIterator();
+    public static <H> void add(List<? super H> destinationList, List<? extends H> sourceList) {
+        final ListIterator<? super H> destListIterator = destinationList.listIterator();
+        final ListIterator<? extends H> srcListIterator = sourceList.listIterator();
         for (int i = 0; i < sourceList.size(); i++) {
             destListIterator.add(srcListIterator.next());
         }
     }
 
 
-    public static void main(String[] args) {
-        List<B> destination = new ArrayList<>();
+    public static void main(final String[] args) {
+        final List<B> destination = new ArrayList<>();
         destination.add(new B());
-        List<C> source = new ArrayList<>();
+        final List<C> source = new ArrayList<>();
         source.add(new C());
         add(destination, source);
         System.out.println(destination);
