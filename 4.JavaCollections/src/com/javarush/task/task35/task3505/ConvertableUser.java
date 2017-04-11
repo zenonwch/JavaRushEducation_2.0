@@ -4,7 +4,7 @@ public class ConvertableUser implements Convertable<Integer> {
     private Integer id;
     private String name;
 
-    public ConvertableUser(Integer id, String name) {
+    public ConvertableUser(final Integer id, final String name) {
         this.id = id;
         this.name = name;
     }
