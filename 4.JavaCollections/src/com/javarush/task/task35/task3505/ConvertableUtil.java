@@ -8,8 +8,8 @@ public class ConvertableUtil {
 
     public static <K, T extends Convertable<K>> Map<K, T> convert(final List<T> list) {
         final Map<K, T> result = new HashMap<>();
-        for (int i = 0; i < list.size(); i++) {
-            result.put(list.get(i).getKey(), list.get(i));
+        for (final T key : list) {
+            result.put(key.getKey(), key);
         }
         return result;
     }
