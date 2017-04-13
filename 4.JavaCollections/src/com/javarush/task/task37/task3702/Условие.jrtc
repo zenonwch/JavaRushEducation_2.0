@@ -22,13 +22,6 @@ taskKey="com.javarush.task.task37.task3702.big04"
 Работа джава программистом стала еще ближе, скоро достигнешь цели!
 
 
-Требования:
-1.	Класс MaleFactory должен поддерживать интерфейс AbstractFactory.
-2.	Класс FemaleFactory должен поддерживать интерфейс AbstractFactory.
-3.	В классе FactoryProducer должен быть создан enum HumanFactoryType со значениями MALE, FEMALE.
-4.	Метод getFactory в классе FactoryProducer должен принимать один параметр типа HumanFactoryType.
-5.	Метод getFactory в классе FactoryProducer должен возвращать одну из фабрик в зависимости от принятого параметра.
-
 
 Фабрики (3)
 
