@@ -9,39 +9,39 @@ Wildcards для коллекций
 */
 public class Solution {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
     }
 
-    public static Double sum(List list) {
+    public static Double sum(final List<? extends Number> list) {
         Double result = 0.0;
         for (int i = 0; i < list.size(); i++) {
-            Number numb = (Number) list.get(i);
+            final Number numb = list.get(i);
             result += numb.doubleValue();
         }
         return result;
     }
 
-    public static Double multiply(List list) {
+    public static Double multiply(final List<? extends Number> list) {
         Double result = 1.0;
         for (int i = 0; i < list.size(); i++) {
-            Number numb = (Number) list.get(i);
+            final Number numb = list.get(i);
             result *= numb.doubleValue();
         }
         return result;
     }
 
-    public static String concat(List list) {
-        StringBuilder builder = new StringBuilder();
-        for (Object obj : list) {
+    public static String concat(final List<?> list) {
+        final StringBuilder builder = new StringBuilder();
+        for (final Object obj : list) {
             builder.append(obj);
         }
         return builder.toString();
     }
 
-    public static List combine(List list) {
-        List result = new ArrayList<>();
+    public static List<Object> combine(final List<? extends Collection> list) {
+        final List<Object> result = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            Collection collection = (Collection) list.get(i);
+            final Collection collection = list.get(i);
             result.addAll(collection);
         }
         return result;
