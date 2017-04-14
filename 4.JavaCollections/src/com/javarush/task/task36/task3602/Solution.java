@@ -16,10 +16,7 @@ public class Solution {
 
         for (final Class<?> cls : Collections.class.getDeclaredClasses()) {
 
-            final Set<Class<?>> interfaces = new HashSet<>();
-            getAllInterfaces(cls, interfaces);
-
-            if (interfaces.contains(List.class)
+            if (List.class.isAssignableFrom(cls)
                     && Modifier.isPrivate(cls.getModifiers())
                     && Modifier.isStatic(cls.getModifiers())) {
                 try {
@@ -35,16 +32,5 @@ public class Solution {
         }
 
         return null;
-    }
-
-    private static void getAllInterfaces(final Class<?> clazz, final Set<Class<?>> interfaces) {
-        if (clazz == null) return;
-        if (clazz.getInterfaces().length == 0) return;
-        interfaces.addAll(Arrays.asList(clazz.getInterfaces()));
-        for (final Class<?> intf : clazz.getInterfaces()) {
-            getAllInterfaces(intf, interfaces);
-            getAllInterfaces(intf.getSuperclass(), interfaces);
-        }
-        getAllInterfaces(clazz.getSuperclass(), interfaces);
     }
 }
