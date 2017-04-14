@@ -6,29 +6,18 @@ public class CarModel {
     private int speed;
     private int maxSpeed;
 
-    public void speedUp(int seconds) {
-        if (speed < maxSpeed) {
-            speed += (3.5 * seconds);
-        }
-        if (speed > maxSpeed) {
-            speed = maxSpeed;
-        }
-    }
-
-    public void speedDown(int seconds) {
-        if (speed > 0) {
-            speed -= (12 * seconds);
-        }
-        if (speed < 0) {
-            speed = 0;
-        }
+    public CarModel(final String brand, final String model, final int speed, final int maxSpeed) {
+        this.brand = brand;
+        this.model = model;
+        this.speed = speed;
+        this.maxSpeed = maxSpeed;
     }
 
     public String getModel() {
         return model;
     }
 
-    public void setModel(String model) {
+    public void setModel(final String model) {
         this.model = model;
     }
 
@@ -36,7 +25,7 @@ public class CarModel {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(final String brand) {
         this.brand = brand;
     }
 
@@ -44,7 +33,7 @@ public class CarModel {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(final int speed) {
         this.speed = speed;
     }
 
@@ -52,7 +41,8 @@ public class CarModel {
         return maxSpeed;
     }
 
-    public void setMaxSpeed(int maxSpeed) {
+    public void setMaxSpeed(final int maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
+
 }
