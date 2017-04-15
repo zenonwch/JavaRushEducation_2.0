@@ -23,21 +23,13 @@ public class Solution {
     public Set<Integer> getAllFriendsAndPotentialFriends(final int index, final int deep) {
         final Set<Integer> relations = new HashSet<>();
         if (deep == 0) return relations;
-        final boolean[] humanRelation = humansRelationships[index];
-        for (int j = 0, l = humanRelation.length - 1; j < l; j++) {
-            if (humanRelation[j]) {
-                relations.add(j);
-                relations.addAll(getAllFriendsAndPotentialFriends(j, deep - 1));
-            }
-        }
-        for (int j = index + 1, l = humansRelationships.length; j < l; j++) {
-            if (humansRelationships[j][index]) {
+        for (int j = 0, l = humansRelationships.length; j < l; j++) {
+            if ((j < index && humansRelationships[index][j]) || (j > index && humansRelationships[j][index])) {
                 relations.add(j);
                 relations.addAll(getAllFriendsAndPotentialFriends(j, deep - 1));
             }
         }
         relations.remove(index);
-        //напишите тут ваш код
         return relations;
     }
 
