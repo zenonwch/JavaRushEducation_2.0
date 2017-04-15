@@ -21,14 +21,14 @@ public class RedBlackTree {
     }
 
     public boolean isEmpty() {
-        return header.left == EMPTY;
+        return header.right == EMPTY;
     }
 
     public void clear() {
         header.right = EMPTY;
     }
 
-    public void insert(int item) {
+    public void insert(final int item) {
         current = grand = parent = header;
         EMPTY.element = item;
         while (current.element != item) {
@@ -37,7 +37,7 @@ public class RedBlackTree {
             parent = current;
             current = item > current.element ? current.right : current.left;
 
-            if (current.left.color == Color.RED && current.right.color == Color.BLACK) {
+            if (current.left.color == Color.RED && current.right.color == Color.RED) {
                 reorient(item);
             }
         }
@@ -57,7 +57,7 @@ public class RedBlackTree {
         reorient(item);
     }
 
-    protected void reorient(int item) {
+    protected void reorient(final int item) {
         current.color = Color.RED;
         current.left.color = Color.BLACK;
         current.right.color = Color.BLACK;
@@ -74,32 +74,32 @@ public class RedBlackTree {
         header.right.color = Color.BLACK;
     }
 
-    private Node rotate(int item, Node parent) {
+    private Node rotate(final int item, final Node parent) {
         if (item < parent.element) {
-            Node node = parent.left;
-            Node resultNode = item < node.element ? rotateWithLeftNode(node) : rotateWithRightNode(node);
+            final Node node = parent.left;
+            final Node resultNode = item < node.element ? rotateWithLeftNode(node) : rotateWithRightNode(node);
             parent.left = resultNode;
             return parent.left;
         } else {
-            Node node = parent.right;
-            Node resultNode = item < node.element ? rotateWithLeftNode(node) : rotateWithRightNode(node);
+            final Node node = parent.right;
+            final Node resultNode = item < node.element ? rotateWithLeftNode(node) : rotateWithRightNode(node);
             parent.right = resultNode;
             return parent.right;
         }
     }
 
-    private Node rotateWithLeftNode(Node element) {
-        Node left = element.left;
+    private Node rotateWithLeftNode(final Node element) {
+        final Node left = element.left;
         element.left = left.right;
         left.right = element;
         return left;
     }
 
-    private Node rotateWithRightNode(Node element) {
-        Node left = element.left;
-        element.left = left.right;
-        left.right = element;
-        return left;
+    private Node rotateWithRightNode(final Node element) {
+        final Node right = element.right;
+        element.right = right.left;
+        right.left = element;
+        return right;
     }
 
     public static enum Color {
@@ -113,11 +113,11 @@ public class RedBlackTree {
         private Node right;
         private Color color;
 
-        public Node(int element) {
+        public Node(final int element) {
             this(element, null, null);
         }
 
-        public Node(int element, Node left, Node right) {
+        public Node(final int element, final Node left, final Node right) {
             this.left = left;
             this.right = right;
             this.element = element;
