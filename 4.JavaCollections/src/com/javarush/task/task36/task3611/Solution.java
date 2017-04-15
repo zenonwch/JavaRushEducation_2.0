@@ -10,22 +10,39 @@ import java.util.Set;
 public class Solution {
     private boolean[][] humansRelationships;
 
-    public static void main(String[] args) {
-        Solution solution = new Solution();
+    public static void main(final String[] args) {
+        final Solution solution = new Solution();
         solution.humansRelationships = generateRelationships();
 
-        Set<Integer> allFriendsAndPotentialFriends = solution.getAllFriendsAndPotentialFriends(4, 2);
+        final Set<Integer> allFriendsAndPotentialFriends = solution.getAllFriendsAndPotentialFriends(4, 2);
         System.out.println(allFriendsAndPotentialFriends);                              //expected: [0, 1, 2, 3, 5, 7]
-        Set<Integer> potentialFriends = solution.removeFriendsFromSet(allFriendsAndPotentialFriends, 4);
+        final Set<Integer> potentialFriends = solution.removeFriendsFromSet(allFriendsAndPotentialFriends, 4);
         System.out.println(potentialFriends);                                           //expected: [2, 5, 7]
     }
 
-    public Set<Integer> getAllFriendsAndPotentialFriends(int index, int deep) {
+    public Set<Integer> getAllFriendsAndPotentialFriends(final int index, final int deep) {
+        final Set<Integer> relations = new HashSet<>();
+        if (deep == 0) return relations;
+        final boolean[] humanRelation = humansRelationships[index];
+        for (int j = 0, l = humanRelation.length - 1; j < l; j++) {
+            if (humanRelation[j]) {
+                relations.add(j);
+                relations.addAll(getAllFriendsAndPotentialFriends(j, deep - 1));
+            }
+        }
+        for (int j = index + 1, l = humansRelationships.length; j < l; j++) {
+            if (humansRelationships[j][index]) {
+                relations.add(j);
+                relations.addAll(getAllFriendsAndPotentialFriends(j, deep - 1));
+            }
+        }
+        relations.remove(index);
         //напишите тут ваш код
+        return relations;
     }
 
     //remove people from set, with which you have already had relationship
-    public Set<Integer> removeFriendsFromSet(Set<Integer> set, int index) {
+    public Set<Integer> removeFriendsFromSet(final Set<Integer> set, final int index) {
         for (int i = 0; i < humansRelationships.length; i++) {
             if ((i < index) && (index < humansRelationships.length) && humansRelationships[index][i]) {
                 set.remove(i);
