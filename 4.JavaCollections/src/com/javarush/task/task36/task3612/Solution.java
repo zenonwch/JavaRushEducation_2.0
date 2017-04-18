@@ -12,8 +12,8 @@ public class Solution {
     private Set<Date> dates;
     private Date lastDate;
 
-    public static void main(String[] args) {
-        Solution solution = new Solution();
+    public static void main(final String[] args) {
+        final Solution solution = new Solution();
         solution.initializeDates();
         solution.updateLastDate(3_600_000L);
         System.out.println(solution.isLastDateContainsInDates());
@@ -33,7 +33,9 @@ public class Solution {
         dates.add(new Date(5555555L));
     }
 
-    protected void updateLastDate(long delta) {
+    protected void updateLastDate(final long delta) {
+        dates.remove(lastDate);
         lastDate.setTime(lastDate.getTime() + delta);
+        dates.add(lastDate);
     }
 }
