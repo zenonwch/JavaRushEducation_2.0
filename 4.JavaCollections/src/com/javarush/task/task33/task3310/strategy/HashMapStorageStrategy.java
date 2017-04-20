@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class HashMapStorageStrategy implements StorageStrategy {
-    private HashMap<Long, String> data;
+    private HashMap<Long, String> data = new HashMap<>();
 
     @Override
     public boolean containsKey(final Long key) {

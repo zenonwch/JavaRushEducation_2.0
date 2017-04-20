@@ -14,7 +14,7 @@ public class Shortener {
         if (storageStrategy.containsValue(string)) {
             return storageStrategy.getKey(string);
         }
-        storageStrategy.put(lastId++, string);
+        storageStrategy.put(++lastId, string);
         return lastId;
     }
 
