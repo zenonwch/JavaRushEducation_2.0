@@ -1,5 +1,6 @@
 package com.javarush.task.task37.task3704;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -7,8 +8,8 @@ import java.util.TreeMap;
 Фикс бага
 */
 public class Solution {
-    public static void main(String[] args) {
-        Map expectedMap = getExpectedMap();
+    public static void main(final String[] args) {
+        final Map expectedMap = getExpectedMap();
 
         System.out.println("********* Add obj with NULL key *********");
         expectedMap.put(null, "text 1");
@@ -22,11 +23,11 @@ public class Solution {
         System.out.println(expectedMap.get(0));
 
         System.out.println("********* Keys *********");
-        for (Object o : expectedMap.keySet()) {
+        for (final Object o : expectedMap.keySet()) {
             System.out.println(o);
         }
         System.out.println("********* Values *********");
-        for (Object o : expectedMap.values()) {
+        for (final Object o : expectedMap.values()) {
             System.out.println(o);
         }
 
@@ -48,6 +49,6 @@ text 1
     }
 
     public static Map getExpectedMap() {
-        return new TreeMap();
+        return new HashMap();
     }
 }
