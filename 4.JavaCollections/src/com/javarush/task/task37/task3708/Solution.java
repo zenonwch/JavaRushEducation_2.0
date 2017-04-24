@@ -1,6 +1,7 @@
 package com.javarush.task.task37.task3708;
 
 import com.javarush.task.task37.task3708.retrievers.CachingProxyRetriever;
+import com.javarush.task.task37.task3708.retrievers.OriginalRetriever;
 import com.javarush.task.task37.task3708.retrievers.Retriever;
 import com.javarush.task.task37.task3708.storage.FarAwayStorage;
 import com.javarush.task.task37.task3708.storage.Storage;
@@ -11,8 +12,8 @@ import com.javarush.task.task37.task3708.storage.Storage;
 public class Solution {
     private static final int n = 10;
 
-    public static void main(String[] args) {
-        Storage storage = new FarAwayStorage();
+    public static void main(final String[] args) {
+        final Storage storage = new FarAwayStorage();
 
         fillStorage(storage);
 
@@ -23,13 +24,13 @@ public class Solution {
         testRetriever(new CachingProxyRetriever(storage));
     }
 
-    private static void fillStorage(Storage storage) {
+    private static void fillStorage(final Storage storage) {
         for (int i = 0; i < n; i++) {
             storage.add("Resource #" + i);
         }
     }
 
-    private static void testRetriever(Retriever retriever) {
+    private static void testRetriever(final Retriever retriever) {
         for (int i = 0; i < n * 4; i++) {
             System.out.println("Loaded value : " + retriever.retrieve((long) (Math.random() * n)));
         }
