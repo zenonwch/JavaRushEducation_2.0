@@ -5,7 +5,8 @@ public class Engineer extends AbstractCrewMember {
         this.competencyLevel = competencyLevel;
     }
 
-    protected void doTheJob(String request) {
+    @Override
+    protected void doTheJob(final String request) {
         System.out.println(request + " is a common engineering task. To the work!");
     }
 }

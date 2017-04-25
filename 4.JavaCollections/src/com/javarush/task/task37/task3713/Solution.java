@@ -7,9 +7,9 @@ import com.javarush.task.task37.task3713.space.SpaceShip;
 Chain of Responsibility
 */
 public class Solution {
-    public static void main(String[] args) {
-        SpaceShip spaceShip = new SpaceShip();
-        AbstractCrewMember crewMember = spaceShip.getCrewChain();
+    public static void main(final String[] args) {
+        final SpaceShip spaceShip = new SpaceShip();
+        final AbstractCrewMember crewMember = spaceShip.getCrewChain();
 
         crewMember.handleRequest(AbstractCrewMember.CompetencyLevel.EXPERT, "ATTACK");
         System.out.println("-----------------------------------------");

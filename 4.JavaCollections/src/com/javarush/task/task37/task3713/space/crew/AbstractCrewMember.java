@@ -12,12 +12,12 @@ public abstract class AbstractCrewMember {
 
     protected AbstractCrewMember nextCrewMember;
 
-    public void setNextCrewMember(AbstractCrewMember nextCrewMember) {
+    public void setNextCrewMember(final AbstractCrewMember nextCrewMember) {
         this.nextCrewMember = nextCrewMember;
     }
 
-    public void handleRequest(CompetencyLevel competencyLevel, String request) {
-        if (nextCrewMember.competencyLevel == CompetencyLevel.EXPERT) {
+    public void handleRequest(final CompetencyLevel competencyLevel, final String request) {
+        if (this.competencyLevel == competencyLevel) {
             doTheJob(request);
         } else if (nextCrewMember != null) {
             nextCrewMember.handleRequest(competencyLevel, request);
