@@ -3,7 +3,7 @@ package com.javarush.task.task37.task3709.connectors;
 public class SimpleConnector implements Connector {
     private String resourceString;
 
-    public SimpleConnector(String resourceString) {
+    public SimpleConnector(final String resourceString) {
         this.resourceString = resourceString;
     }
 

@@ -8,9 +8,9 @@ import com.javarush.task.task37.task3709.connectors.SimpleConnector;
 Security Proxy
 */
 public class Solution {
-    public static void main(String[] args) {
-        Connector securityProxyConnector = new SecurityProxyConnector("google.com");
-        Connector simpleConnector = new SimpleConnector("javarush.ru");
+    public static void main(final String[] args) {
+        final Connector securityProxyConnector = new SecurityProxyConnector("google.com");
+        final Connector simpleConnector = new SimpleConnector("javarush.ru");
 
         System.out.println("Connecting with SimpleConnector...");
         simpleConnector.connect();
