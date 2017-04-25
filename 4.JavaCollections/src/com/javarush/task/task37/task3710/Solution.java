@@ -9,10 +9,10 @@ import com.javarush.task.task37.task3710.shapes.Shape;
 Decorator
 */
 public class Solution {
-    public static void main(String[] args) {
-        Shape circle = new Circle();
-        Shape redCircle = new RedShapeDecorator(new Circle());
-        Shape redRectangle = new RedShapeDecorator(new Rectangle());
+    public static void main(final String[] args) {
+        final Shape circle = new Circle();
+        final Shape redCircle = new RedShapeDecorator(new Circle());
+        final Shape redRectangle = new RedShapeDecorator(new Rectangle());
 
         System.out.println("Simple circle");
         circle.draw();
