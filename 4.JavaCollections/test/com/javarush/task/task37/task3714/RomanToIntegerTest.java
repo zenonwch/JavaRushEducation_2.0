@@ -14,14 +14,14 @@ public class RomanToIntegerTest {
     @Test
     @Parameters(method = "positiveData")
     @TestCaseName("[{index}]: {0} == {1}")
-    public void testPositiveRomanToIntegerConverter(final String romanNumber, final int integerNumber) throws Exception {
+    public void testRomanToIntegerConverterPositive(final String romanNumber, final int integerNumber) throws Exception {
         assertEquals(integerNumber, Solution.romanToInteger(romanNumber));
     }
 
     @Test(expected = NumberFormatException.class)
-    @Parameters(method = "negativeData")
+    @Parameters({"A", "IVX", "VV", "XXXXX", "LL", "DD", "XD", "XM", "MXCIL"})
     @TestCaseName("[{index}]: {0}")
-    public void testNegativeRomanToIntegerConverter(final String romanNumber) throws Exception {
+    public void testRomanToIntegerConverterNegative(final String romanNumber) throws Exception {
         Solution.romanToInteger(romanNumber);
     }
 
@@ -58,9 +58,5 @@ public class RomanToIntegerTest {
                 new Object[]{"MM", 2000},
                 new Object[]{"MMXVII", 2017}
         };
-    }
-
-    private Object[] negativeData() {
-        return new Object[]{"A", "IVX", "VV", "XXXXX", "LL", "DD", "XD", "XM", "MXCIL"};
     }
 }
