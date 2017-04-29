@@ -1,6 +1,7 @@
 package com.javarush.task.task39.task3913;
 
 import com.javarush.task.task39.task3913.query.DateQuery;
+import com.javarush.task.task39.task3913.query.EventQuery;
 import com.javarush.task.task39.task3913.query.IPQuery;
 import com.javarush.task.task39.task3913.query.UserQuery;
 
@@ -13,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class LogParser implements IPQuery, UserQuery, DateQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
     private final Path logDir;
 
     public LogParser(final Path logDir) {
@@ -189,6 +190,80 @@ public class LogParser implements IPQuery, UserQuery, DateQuery {
     @Override
     public Set<Date> getDatesWhenUserDownloadedPlugin(final String user, final Date after, final Date before) {
         return getDatesForUserAndEvent(user, Event.DOWNLOAD_PLUGIN, after, before);
+    }
+
+    @Override
+    public int getNumberOfAllEvents(final Date after, final Date before) {
+        return getAllEvents(after, before).size();
+    }
+
+    @Override
+    public Set<Event> getAllEvents(final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .map(log -> log.event)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Event> getEventsForIP(final String ip, final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.ip.equals(ip))
+                .map(log -> log.event)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Event> getEventsForUser(final String user, final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.user.equals(user))
+                .map(log -> log.event)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Event> getFailedEvents(final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.status == Status.FAILED)
+                .map(log -> log.event)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Event> getErrorEvents(final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.status == Status.ERROR)
+                .map(log -> log.event)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public int getNumberOfAttemptToSolveTask(final int task, final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.event == Event.SOLVE_TASK && log.task == task)
+                .collect(Collectors.toSet())
+                .size();
+    }
+
+    @Override
+    public int getNumberOfSuccessfulAttemptToSolveTask(final int task, final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.event == Event.DONE_TASK && log.task == task)
+                .collect(Collectors.toSet())
+                .size();
+    }
+
+    @Override
+    public Map<Integer, Integer> getAllSolvedTasksAndTheirNumber(final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.event == Event.SOLVE_TASK)
+                .collect(Collectors.groupingBy(Log::getTask, Collectors.summingInt(i -> 1)));
+    }
+
+    @Override
+    public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.event == Event.DONE_TASK)
+                .collect(Collectors.groupingBy(Log::getTask, Collectors.summingInt(i -> 1)));
     }
 
     private Set<String> getUsersByEvent(final Date after, final Date before, final Event event) {
