@@ -7,5 +7,6 @@ public class Solution {
     public static void main(final String[] args) {
         final LogParser logParser = new LogParser(Paths.get("c:/temp/logs/"));
         System.out.println(logParser.getNumberOfUniqueIPs(null, new Date()));
+        System.out.println(logParser.getDateWhenUserLoggedFirstTime("Vasya Pupkin", null, null));
     }
 }

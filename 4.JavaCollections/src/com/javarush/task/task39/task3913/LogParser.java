@@ -1,5 +1,6 @@
 package com.javarush.task.task39.task3913;
 
+import com.javarush.task.task39.task3913.query.DateQuery;
 import com.javarush.task.task39.task3913.query.IPQuery;
 import com.javarush.task.task39.task3913.query.UserQuery;
 
@@ -12,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class LogParser implements IPQuery, UserQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery {
     private final Path logDir;
 
     public LogParser(final Path logDir) {
@@ -126,6 +127,68 @@ public class LogParser implements IPQuery, UserQuery {
                 .filter(log -> log.event == Event.DONE_TASK && log.task == task)
                 .map(log -> log.user)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Date> getDatesForUserAndEvent(final String user, final Event event, final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.event == event && log.user.equals(user))
+                .map(log -> log.date)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Date> getDatesWhenSomethingFailed(final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.status == Status.FAILED)
+                .map(log -> log.date)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Date> getDatesWhenErrorHappened(final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.status == Status.ERROR)
+                .map(log -> log.date)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Date getDateWhenUserLoggedFirstTime(final String user, final Date after, final Date before) {
+        return getDatesForUserAndEvent(user, Event.LOGIN, after, before).stream()
+                .sorted()
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public Date getDateWhenUserSolvedTask(final String user, final int task, final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.event == Event.SOLVE_TASK && log.task == task && log.user.equals(user))
+                .map(log -> log.date)
+                .sorted()
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public Date getDateWhenUserDoneTask(final String user, final int task, final Date after, final Date before) {
+        return getLogsForPeriod(after, before).stream()
+                .filter(log -> log.event == Event.DONE_TASK && log.task == task && log.user.equals(user))
+                .map(log -> log.date)
+                .sorted()
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public Set<Date> getDatesWhenUserWroteMessage(final String user, final Date after, final Date before) {
+        return getDatesForUserAndEvent(user, Event.WRITE_MESSAGE, after, before);
+    }
+
+    @Override
+    public Set<Date> getDatesWhenUserDownloadedPlugin(final String user, final Date after, final Date before) {
+        return getDatesForUserAndEvent(user, Event.DOWNLOAD_PLUGIN, after, before);
     }
 
     private Set<String> getUsersByEvent(final Date after, final Date before, final Event event) {
