@@ -4,8 +4,8 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 public class Solution {
-    public static void main(String[] args) {
-        LogParser logParser = new LogParser(Paths.get("c:/logs/"));
+    public static void main(final String[] args) {
+        final LogParser logParser = new LogParser(Paths.get("c:/temp/logs/"));
         System.out.println(logParser.getNumberOfUniqueIPs(null, new Date()));
     }
 }
