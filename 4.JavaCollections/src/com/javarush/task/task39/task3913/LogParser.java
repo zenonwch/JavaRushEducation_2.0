@@ -1,9 +1,6 @@
 package com.javarush.task.task39.task3913;
 
-import com.javarush.task.task39.task3913.query.DateQuery;
-import com.javarush.task.task39.task3913.query.EventQuery;
-import com.javarush.task.task39.task3913.query.IPQuery;
-import com.javarush.task.task39.task3913.query.UserQuery;
+import com.javarush.task.task39.task3913.query.*;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -14,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQuery {
     private final Path logDir;
 
     public LogParser(final Path logDir) {
@@ -264,6 +261,43 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
         return getLogsForPeriod(after, before).stream()
                 .filter(log -> log.event == Event.DONE_TASK)
                 .collect(Collectors.groupingBy(Log::getTask, Collectors.summingInt(i -> 1)));
+    }
+
+    @Override
+    public Set<Object> execute(final String query) {
+        final Set<Object> result = new HashSet<>();
+        switch (query) {
+            case "get ip":
+                result.addAll(getUniqueIPs(null, null));
+                break;
+            case "get user":
+                result.addAll(getAllUsers());
+                break;
+            case "get date":
+                result.addAll(getAllDates());
+                break;
+            case "get event":
+                result.addAll(getAllEvents(null, null));
+                break;
+            case "get status":
+                result.addAll(getAllStatuses());
+                break;
+            default:
+                throw new UnsupportedOperationException();
+        }
+        return result;
+    }
+
+    private Set<Date> getAllDates() {
+        return collectLogs().stream()
+                .map(log -> log.date)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Status> getAllStatuses() {
+        return collectLogs().stream()
+                .map(log -> log.status)
+                .collect(Collectors.toSet());
     }
 
     private Set<String> getUsersByEvent(final Date after, final Date before, final Event event) {
