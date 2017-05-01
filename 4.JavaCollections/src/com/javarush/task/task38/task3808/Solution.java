@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Solution {
     @Main
-    public static void main(String[] args) {
-        Solution solution = new Solution().new SubSolution();
+    public static void main(final String[] args) {
+        final Solution solution = new Solution().new SubSolution();
         solution.overriddenMethod();
     }
 
@@ -20,14 +20,14 @@ public class Solution {
     }
 
     public class SubSolution extends Solution {
-        @SafeVarargs
+        @Override
         public void overriddenMethod() {
             System.out.println(uncheckedCall());
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
         List uncheckedCall() {
-            List list = new ArrayList();
+            final List list = new ArrayList();
             list.add("hello");
             return list;
         }
