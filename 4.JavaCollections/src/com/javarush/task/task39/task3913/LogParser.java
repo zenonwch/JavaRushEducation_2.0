@@ -3,6 +3,7 @@ package com.javarush.task.task39.task3913;
 import com.javarush.task.task39.task3913.query.*;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -265,6 +266,10 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
 
     @Override
     public Set<Object> execute(final String query) {
+        if (query.contains("=")) {
+            return executeQueryWithParam(query);
+        }
+
         final Set<Object> result = new HashSet<>();
         switch (query) {
             case "get ip":
@@ -286,6 +291,63 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
                 throw new UnsupportedOperationException();
         }
         return result;
+    }
+
+    private Set<Object> executeQueryWithParam(final String query) {
+        final String param1Name = query.split("\\s")[1];
+        final String param2Name = query.split("\\s")[3];
+
+        try {
+            final Field param1 = Log.class.getDeclaredField(param1Name);
+            final Field param2 = Log.class.getDeclaredField(param2Name);
+            param1.setAccessible(true);
+            param2.setAccessible(true);
+
+            final String valueBegin = query.substring(query.indexOf("\"") + 1);
+            final String param2Value = valueBegin.substring(0, valueBegin.indexOf("\""));
+
+            return collectLogs().stream()
+                    .filter(log -> {
+                        try {
+                            return dataComparator(param2.get(log), param2Name, param2Value);
+                        } catch (final IllegalAccessException ignored) {
+                            return false;
+                        }
+                    })
+                    .map(log -> {
+                        try {
+                            return param1.get(log);
+                        } catch (final IllegalAccessException ignored) {
+                            return false;
+                        }
+                    })
+                    .collect(Collectors.toSet());
+        } catch (final NoSuchFieldException ignored) {
+            return null;
+        }
+    }
+
+    private boolean dataComparator(final Object obj, final String paramName, final String paramValue) {
+        Object value = null;
+        switch (paramName) {
+            case "date":
+                try {
+                    value = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(paramValue);
+                } catch (final ParseException ignored) {
+                }
+                break;
+            case "event":
+                value = Event.valueOf(paramValue);
+                break;
+            case "status":
+                value = Status.valueOf(paramValue);
+                break;
+            default:
+                value = paramValue;
+                break;
+        }
+
+        return Objects.equals(obj, value);
     }
 
     private Set<Date> getAllDates() {
