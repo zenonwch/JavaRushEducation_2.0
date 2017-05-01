@@ -4,7 +4,8 @@ public class SolutionException extends Exception {
     public SolutionException() {
         super();
     }
-    public SolutionException(String message) {
+
+    public SolutionException(final String message) {
         super(message);
     }
 }

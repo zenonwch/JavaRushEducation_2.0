@@ -4,7 +4,8 @@ public class WrongDataException extends Exception {
     public WrongDataException() {
         super();
     }
-    public WrongDataException(String message) {
+
+    public WrongDataException(final String message) {
         super(message);
     }
 }

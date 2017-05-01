@@ -3,10 +3,11 @@ package com.javarush.task.task38.task3805;
 public class ConnectionMock implements Connection {
     @Override
     public void connect() throws WrongDataException, ConnectionException {
+        throw new ConnectionException("test");
     }
 
     @Override
-    public void write(Object data) throws WrongDataException, ConnectionException {
+    public void write(final Object data) throws WrongDataException, ConnectionException {
     }
 
     @Override
