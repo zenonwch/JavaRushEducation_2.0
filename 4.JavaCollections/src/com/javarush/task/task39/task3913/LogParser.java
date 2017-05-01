@@ -10,6 +10,8 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQuery {
@@ -266,75 +268,42 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
 
     @Override
     public Set<Object> execute(final String query) {
-        if (query.contains("=")) {
-            return executeQueryWithParam(query);
+        final Pattern p = Pattern.compile("\"([^\"]*)\"");
+        final Matcher m = p.matcher(query);
+        final List<String> values = new ArrayList<>();
+        while (m.find()) {
+            values.add(m.group(1));
         }
 
-        final Set<Object> result = new HashSet<>();
-        switch (query) {
-            case "get ip":
-                result.addAll(getUniqueIPs(null, null));
-                break;
-            case "get user":
-                result.addAll(getAllUsers());
-                break;
-            case "get date":
-                result.addAll(getAllDates());
-                break;
-            case "get event":
-                result.addAll(getAllEvents(null, null));
-                break;
-            case "get status":
-                result.addAll(getAllStatuses());
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
-        return result;
+        final String p1Name = query.split("\\s")[1];
+        final String p2Name = values.isEmpty() ? null : query.split("\\s")[3];
+        final String p2Value = values.isEmpty() ? null : values.get(0);
+        final Date dateAfter = values.size() >= 2 ? getDateFromString(values.get(1)) : null;
+        final Date dateBefore = values.size() == 3 ? getDateFromString(values.get(2)) : null;
+
+        return collectLogs().stream()
+                .filter(log -> log.date.getTime() > (dateAfter == null ? Long.MIN_VALUE : dateAfter.getTime())
+                        && log.date.getTime() < (dateBefore == null ? Long.MAX_VALUE : dateBefore.getTime()))
+                .filter(log -> p2Name == null || Objects.equals(getReflectedFieldValue(log, p2Name), getValueFromString(p2Name, p2Value)))
+                .map(log -> getReflectedFieldValue(log, p1Name))
+                .collect(Collectors.toSet());
     }
 
-    private Set<Object> executeQueryWithParam(final String query) {
-        final String param1Name = query.split("\\s")[1];
-        final String param2Name = query.split("\\s")[3];
-
+    private Object getReflectedFieldValue(final Log log, final String paramName) {
         try {
-            final Field param1 = Log.class.getDeclaredField(param1Name);
-            final Field param2 = Log.class.getDeclaredField(param2Name);
-            param1.setAccessible(true);
-            param2.setAccessible(true);
-
-            final String valueBegin = query.substring(query.indexOf("\"") + 1);
-            final String param2Value = valueBegin.substring(0, valueBegin.indexOf("\""));
-
-            return collectLogs().stream()
-                    .filter(log -> {
-                        try {
-                            return dataComparator(param2.get(log), param2Name, param2Value);
-                        } catch (final IllegalAccessException ignored) {
-                            return false;
-                        }
-                    })
-                    .map(log -> {
-                        try {
-                            return param1.get(log);
-                        } catch (final IllegalAccessException ignored) {
-                            return false;
-                        }
-                    })
-                    .collect(Collectors.toSet());
-        } catch (final NoSuchFieldException ignored) {
+            final Field param = Log.class.getDeclaredField(paramName);
+            param.setAccessible(true);
+            return param.get(log);
+        } catch (final IllegalAccessException | NoSuchFieldException ignored) {
             return null;
         }
     }
 
-    private boolean dataComparator(final Object obj, final String paramName, final String paramValue) {
+    private Object getValueFromString(final String paramName, final String paramValue) {
         Object value = null;
         switch (paramName) {
             case "date":
-                try {
-                    value = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(paramValue);
-                } catch (final ParseException ignored) {
-                }
+                value = getDateFromString(paramValue);
                 break;
             case "event":
                 value = Event.valueOf(paramValue);
@@ -347,19 +316,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
                 break;
         }
 
-        return Objects.equals(obj, value);
-    }
-
-    private Set<Date> getAllDates() {
-        return collectLogs().stream()
-                .map(log -> log.date)
-                .collect(Collectors.toSet());
-    }
-
-    private Set<Status> getAllStatuses() {
-        return collectLogs().stream()
-                .map(log -> log.status)
-                .collect(Collectors.toSet());
+        return value;
     }
 
     private Set<String> getUsersByEvent(final Date after, final Date before, final Event event) {
@@ -415,15 +372,18 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
             stringTime = logData[l - 3];
             stringDate = logData[l - 4];
         }
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(stringDate + ' ' + stringTime);
-        } catch (final ParseException ignore) {
-
-        }
-
+        final Date date = getDateFromString(stringDate + ' ' + stringTime);
         final String user = logLine.substring(ip.length() + 1, logLine.indexOf(stringDate) - 1);
         return new Log(ip, user, date, event, task, status);
+    }
+
+    private Date getDateFromString(final String stringDate) {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(stringDate);
+        } catch (final ParseException ignore) {
+        }
+        return date;
     }
 
     private static final class Log {
