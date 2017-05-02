@@ -10,15 +10,28 @@ import java.util.Set;
 Уникальные подстроки
 */
 public class Solution {
-    public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(final String[] args) throws IOException {
+        final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please input your string: ");
-        String s = bufferedReader.readLine();
+        final String s = bufferedReader.readLine();
 
         System.out.println("The longest unique substring length is: \n" + lengthOfLongestUniqueSubstring(s));
     }
 
-    public static int lengthOfLongestUniqueSubstring(String s) {
-        return -1;
+    public static int lengthOfLongestUniqueSubstring(final String s) {
+        if (s == null || s.isEmpty()) return 0;
+
+        int maxSize = 0;
+
+        final Set<Character> symbols = new HashSet<>();
+        for (final char ch : s.toCharArray()) {
+            if (symbols.contains(ch)) {
+                symbols.clear();
+            }
+            symbols.add(ch);
+            maxSize = symbols.size() > maxSize ? symbols.size() : maxSize;
+        }
+
+        return maxSize;
     }
 }
