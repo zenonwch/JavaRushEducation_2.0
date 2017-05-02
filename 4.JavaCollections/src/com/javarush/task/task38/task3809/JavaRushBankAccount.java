@@ -6,7 +6,7 @@ public class JavaRushBankAccount {
     @LongPositive
     private long amount;
 
-    public JavaRushBankAccount(String ownerName) {
+    public JavaRushBankAccount(final String ownerName) {
         this.ownerName = ownerName;
     }
 
@@ -14,7 +14,7 @@ public class JavaRushBankAccount {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(final long amount) {
         this.amount = amount;
     }
 }
