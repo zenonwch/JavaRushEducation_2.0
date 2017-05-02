@@ -22,7 +22,7 @@ package com.javarush.task.task38.task3810;
                         @Author(value = "Витек", position = Position.SENIOR)})
 })
 public class Solution {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         System.out.println(Solution.class.getAnnotation(Changelog.class).toString());
     }
 }
