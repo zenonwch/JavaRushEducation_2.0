@@ -1,11 +1,6 @@
 package com.javarush.task.task39.task3907.workers;
 
-public class LazyPerson implements Worker {
-    @Override
-    public void work() {
-        //do nothing
-    }
-
+public class LazyPerson implements Sleeper, Eater {
     @Override
     public void eat() {
         System.out.println("LazyPerson is eating!");
