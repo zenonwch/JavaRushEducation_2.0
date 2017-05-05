@@ -1,9 +1,6 @@
 package com.javarush.task.task33.task3310;
 
-import com.javarush.task.task33.task3310.strategy.FileStorageStrategy;
-import com.javarush.task.task33.task3310.strategy.HashMapStorageStrategy;
-import com.javarush.task.task33.task3310.strategy.OurHashMapStorageStrategy;
-import com.javarush.task.task33.task3310.strategy.StorageStrategy;
+import com.javarush.task.task33.task3310.strategy.*;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -50,8 +47,9 @@ public class Solution {
     }
 
     public static void main(final String[] args) {
-        testStrategy(new HashMapStorageStrategy(), 10000L);
-        testStrategy(new OurHashMapStorageStrategy(), 10000L);
-        testStrategy(new FileStorageStrategy(), 100L);
+        testStrategy(new HashMapStorageStrategy(), 100000L);
+        testStrategy(new OurHashMapStorageStrategy(), 100000L);
+//        testStrategy(new FileStorageStrategy(), 100L);
+        testStrategy(new OurHashBiMapStorageStrategy(), 100000L);
     }
 }
