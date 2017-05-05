@@ -21,13 +21,12 @@ public class FileBucket {
     }
 
     public long getFileSize() {
-        long size = 0;
         try {
-            size = Files.size(path);
+            return Files.size(path);
         } catch (final IOException e) {
             ExceptionHandler.log(e);
         }
-        return size;
+        return 0L;
     }
 
     public void putEntry(final Entry entry) {
@@ -41,13 +40,12 @@ public class FileBucket {
     public Entry getEntry() {
         if (getFileSize() == 0) return null;
 
-        Entry entry = null;
         try (final ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(path))) {
-            entry = (Entry) ois.readObject();
-        } catch (final ClassNotFoundException | IOException e) {
+            return (Entry) ois.readObject();
+        } catch (final Exception e) {
             ExceptionHandler.log(e);
         }
-        return entry;
+        return null;
     }
 
     public void remove() {

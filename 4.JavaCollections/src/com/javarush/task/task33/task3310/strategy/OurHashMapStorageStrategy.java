@@ -45,8 +45,8 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
                 do {
                     final Entry next = e.next;
                     final int j = indexFor(e.hash, newTable.length);
-                    e.next = newTable[i];
-                    newTable[i] = e;
+                    e.next = newTable[j];
+                    newTable[j] = e;
                     e = next;
                 } while (e != null);
             }
