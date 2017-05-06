@@ -1,5 +1,7 @@
 package com.javarush.task.task33.task3310.strategy;
 
+import java.util.Objects;
+
 public class OurHashMapStorageStrategy implements StorageStrategy {
     private static final int DEFAULT_INITIAL_CAPACITY = 16;
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
@@ -72,19 +74,14 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
 
     @Override
     public boolean containsValue(final String value) {
-        if (table.length == 0) return false;
-        for (Entry e : table) {
-            if (e == null) {
-                for (int i = 0; i < table.length; i++) {
-                    for (e = table[i]; e != null; e = e.next) {
-                        if (e.value == null) return true;
+        if (table != null && size > 0) {
+            for (final Entry bucket : table) {
+                for (Entry e = bucket; e != null; e = e.next) {
+                    if (Objects.equals(e.value, value)) {
+                        return true;
                     }
                 }
-                return false;
             }
-            final String eValue = e.getValue();
-            if (value.equals(eValue))
-                return true;
         }
         return false;
     }
@@ -92,27 +89,31 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
     @Override
     public void put(final Long key, final String value) {
         final int hash = (key == null) ? 0 : hash((long) key.hashCode());
-        final int i = indexFor(hash, table.length);
+        final int index = indexFor(hash, table.length);
 
-        for (Entry e = table[i]; e != null; e = e.next) {
-            final Long eKey = e.getKey();
-            if (eKey == key ||
-                    (eKey != null && eKey.equals(key))) {
-                e.value = value;
-                return;
+        if (table[index] != null) {
+            for (Entry e = table[index]; e != null; e = e.next) {
+                if (e.hash == hash && Objects.equals(e.key, key)) {
+                    e.value = value;
+                    return;
+                }
             }
+            addEntry(hash, key, value, index);
+        } else {
+            createEntry(hash, key, value, index);
         }
-
-        addEntry(hash, key, value, i);
     }
 
     @Override
     public Long getKey(final String value) {
-        for (final Entry e : table) {
-            final String eValue = e.getValue();
-            if (eValue == value ||
-                    (eValue != null && eValue.equals(value)))
-                return e.getKey();
+        if (table != null && size > 0) {
+            for (final Entry bucket : table) {
+                for (Entry e = bucket; e != null; e = e.next) {
+                    if (Objects.equals(e.value, value)) {
+                        return e.key;
+                    }
+                }
+            }
         }
         return null;
     }
