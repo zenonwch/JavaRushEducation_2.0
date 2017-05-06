@@ -47,9 +47,10 @@ public class Solution {
     }
 
     public static void main(final String[] args) {
-        testStrategy(new HashMapStorageStrategy(), 100000L);
-        testStrategy(new OurHashMapStorageStrategy(), 100000L);
-//        testStrategy(new FileStorageStrategy(), 100L);
-        testStrategy(new OurHashBiMapStorageStrategy(), 100000L);
+        testStrategy(new HashMapStorageStrategy(), 10000L);
+        testStrategy(new OurHashMapStorageStrategy(), 10000L);
+        testStrategy(new FileStorageStrategy(), 100L);
+        testStrategy(new OurHashBiMapStorageStrategy(), 10000L);
+        testStrategy(new HashBiMapStorageStrategy(), 10000L);
     }
 }
