@@ -19,24 +19,27 @@ import java.util.List;
 */
 
 public class Solution {
-    public static void main(String[] args) throws Exception {
-        Solution solution = new Solution();
-        solution.sendPost("http://requestb.in/1h4qhvv1", "name=zapp&mood=good&locale=&id=777");
+    public static void main(final String[] args) throws Exception {
+        final Solution solution = new Solution();
+        solution.sendPost("http://requestb.in/1naqv771", "name=zapp&mood=good&locale=&id=777");
     }
 
-    public void sendPost(String url, String urlParameters) throws Exception {
-        HttpClient client = getHttpClient();
-        HttpGet request = new HttpGet(url);
+    public void sendPost(final String url, final String urlParameters) throws Exception {
+        final HttpClient client = getHttpClient();
+        final HttpPost request = new HttpPost(url);
 
         request.addHeader("User-Agent", "Mozilla/5.0");
 
-        HttpResponse response = client.execute(request);
+        final List<NameValuePair> parameters = URLEncodedUtils.parse(urlParameters, Charset.defaultCharset());
+        request.setEntity(new UrlEncodedFormEntity(parameters));
+
+        final HttpResponse response = client.execute(request);
 
         System.out.println("Response Code: " + response.getStatusLine().getStatusCode());
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-        StringBuffer result = new StringBuffer();
+        final StringBuffer result = new StringBuffer();
         String responseLine;
         while ((responseLine = bufferedReader.readLine()) != null) {
             result.append(responseLine);
