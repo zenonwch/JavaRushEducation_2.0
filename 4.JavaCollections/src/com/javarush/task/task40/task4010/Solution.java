@@ -12,18 +12,19 @@ import java.net.URL;
 */
 
 public class Solution {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
-            URL url = new URL("http://jsonplaceholder.typicode.com/posts/1");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            final URL url = new URL("http://jsonplaceholder.typicode.com/posts/1");
+            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            if (conn.getResponseCode() != 100) {
+            if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + conn.getResponseCode());
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(
+            final BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
 
             String output;
@@ -34,7 +35,7 @@ public class Solution {
 
             conn.disconnect();
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
 
