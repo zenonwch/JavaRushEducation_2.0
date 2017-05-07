@@ -14,7 +14,7 @@ public class Solution {
         decodeURLString("www.google.com");
     }
 
-    public static void decodeURLString(final String s) throws MalformedURLException {
+    public static void decodeURLString(final String s) {
         try {
             final URL url = new URL(s);
 
