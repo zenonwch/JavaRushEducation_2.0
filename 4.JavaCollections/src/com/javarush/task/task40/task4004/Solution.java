@@ -1,5 +1,6 @@
 package com.javarush.task.task40.task4004;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ class Point {
     public int x;
     public int y;
 
-    Point(int x, int y) {
+    Point(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
@@ -29,8 +30,19 @@ public class Solution {
         System.out.println(isPointInPolygon(new Point(100, 100), polygon));
     }
 
-    public static boolean isPointInPolygon(Point point, List<Point> polygon) {
-        //напишите тут ваш код
+    public static boolean isPointInPolygon(final Point point, final List<Point> polygon) {
+        if (polygon == null || point == null) return false;
+
+        final int[] xArray = new int[polygon.size()];
+        final int[] yArray = new int[polygon.size()];
+
+        for(int i =0; i < polygon.size(); i++) {
+            xArray[i] = polygon.get(i).x;
+            yArray[i] = polygon.get(i).y;
+        }
+
+        final Polygon p = new Polygon(xArray, yArray, polygon.size());
+        return p.contains(point.x, point.y);
     }
 
 }
