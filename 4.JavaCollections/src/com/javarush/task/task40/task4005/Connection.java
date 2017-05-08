@@ -16,13 +16,13 @@ public class Connection implements Closeable {
     private final ObjectInputStream in;
     private final ObjectOutputStream out;
 
-    public Connection(Socket socket) throws Exception {
+    public Connection(final Socket socket) throws Exception {
         this.socket = socket;
-        this.in = new ObjectInputStream(socket.getInputStream());
         this.out = new ObjectOutputStream(socket.getOutputStream());
+        this.in = new ObjectInputStream(socket.getInputStream());
     }
 
-    public void send(String message) throws Exception {
+    public void send(final String message) throws Exception {
         out.writeObject(message);
     }
 
