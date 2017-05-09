@@ -1,10 +1,6 @@
 package com.javarush.task.task40.task4006;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.HttpURLConnection;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 
@@ -13,17 +9,21 @@ import java.net.URL;
 */
 
 public class Solution {
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         getSite(new URL("http://javarush.ru/social.html"));
     }
 
-    public static void getSite(URL url) {
+    public static void getSite(final URL url) {
         try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            final Socket socket = new Socket(url.getHost(), url.getDefaultPort());
+            final OutputStream os = socket.getOutputStream();
+            final PrintWriter writer = new PrintWriter(os, true);
 
-            connection.setRequestMethod("GET");
+            writer.println("GET " + url.getPath() + " HTTP/1.1");
+            writer.flush();
 
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            final InputStream is = socket.getInputStream();
+            final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
             String responseLine;
 
             while ((responseLine = bufferedReader.readLine()) != null) {
@@ -31,7 +31,7 @@ public class Solution {
             }
             bufferedReader.close();
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }
