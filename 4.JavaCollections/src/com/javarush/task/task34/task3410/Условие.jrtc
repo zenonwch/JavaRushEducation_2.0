@@ -1,4 +1,32 @@
-taskKey="com.javarush.task.task34.task3410.big08"
+taskKey="com.javarush.task.task34.task3410.big09"
+
+Sokoban (9)
+
+В процессе работы игры, будут возникать различные события. Давай создадим интерфейс
+слушателя событий EventListener. Его должен реализовывать каждый класс, который хочет
+обрабатывать события. А классы, которые будут генерировать события, будут вызывать
+методы этого интерфейса.
+9.1. Добавь интерфейс EventListener в пакет controller.
+9.2. Добавь в интерфейс void методы:
+9.2.1. move(Direction direction) – передвинуть объект в определенном направлении.
+9.2.2. restart() – начать заново текущий уровень.
+9.2.3. startNextLevel() – начать следующий уровень.
+9.2.4. levelCompleted(int level) – уровень с номером level завершён.
+9.3. Добавь классу Controller интерфейс EventListener, напиши необходимые заглушки-
+реализации интерфейса.
+9.4. Добавь в классы Model и Field по полю EventListener eventListener.
+9.5. Добавь в классы Model, View и Field по методу setEventListener(EventListener
+eventListener). Этот метод в классе View должен вызвать аналогичный метод у объекта
+field, а в классах Model и Field устанавливать значение внутренних полей eventListener.
+
+
+Требования:
+1.	Добавь интерфейс EventListener в пакет controller.
+2.	Добавь в интерфейс EventListener void методы: move(Direction direction), restart(), startNextLevel() и levelCompleted(int level).
+3.	Добавь классу Controller интерфейс EventListener, напиши необходимые заглушки-реализации интерфейса.
+4.	Добавь в классы Model и Field по полю EventListener eventListener.
+5.	Реализуй в классах Model, View и Field методы setEventListener(EventListener eventListener).
+
 
 Sokoban (8)
 
@@ -13,13 +41,6 @@ Player player и инициализирующий поля класса.
 8.2.4. Метод Set<GameObject> getAll(). Он должен возвращать множество, содержащее
 все объекты, хранящиеся внутри класса.
 
-
-Требования:
-1.	Создай класс GameObjects в пакте model.
-2.	Добавь в класс GameObjects поля Set<Wall> walls, Set<Box> boxes, Set<Home> homes и Player player.
-3.	Добавь в класс GameObjects геттеры для полей.
-4.	Добавь в класс GameObjects конструктор класса, принимающий Set<Wall> walls, Set <Box> boxes, Set<Home> homes, Player player и инициализирующий поля класса.
-5.	Добавь в класс GameObjects метод Set<GameObject> getAll(). Он должен возвращать множество, содержащее все объекты, хранящиеся внутри экземпляра класса.
 
 
 Sokoban (7)
