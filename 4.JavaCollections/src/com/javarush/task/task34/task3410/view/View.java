@@ -40,7 +40,7 @@ public class View extends JFrame {
     public void completed(final int level) {
         update();
         JOptionPane.showMessageDialog(null, "Поздравляю!!!",
-                "Уровень" + level + "пройден", JOptionPane.INFORMATION_MESSAGE);
+                "Уровень " + level + " пройден", JOptionPane.INFORMATION_MESSAGE);
         controller.startNextLevel();
     }
 }
