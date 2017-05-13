@@ -3,6 +3,7 @@ package com.javarush.task.task34.task3410.view;
 import com.javarush.task.task34.task3410.model.Box;
 import com.javarush.task.task34.task3410.model.Home;
 import com.javarush.task.task34.task3410.model.Player;
+import com.javarush.task.task34.task3410.model.Wall;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,5 +22,7 @@ public class Field extends JPanel {
         player.draw(g);
         final Home home = new Home(20, 50);
         home.draw(g);
+        final Wall wall = new Wall(50, 50);
+        wall.draw(g);
     }
 }
