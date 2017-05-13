@@ -2,6 +2,7 @@ package com.javarush.task.task34.task3410.view;
 
 import com.javarush.task.task34.task3410.controller.Controller;
 import com.javarush.task.task34.task3410.controller.EventListener;
+import com.javarush.task.task34.task3410.model.GameObjects;
 
 import javax.swing.*;
 
@@ -26,5 +27,13 @@ public class View extends JFrame {
         setLocationRelativeTo(null);
         setTitle("Сокобан");
         setVisible(true);
+    }
+
+    public void update() {
+        field.repaint();
+    }
+
+    public GameObjects getGameObjects() {
+        return controller.getGameObjects();
     }
 }
